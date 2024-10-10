@@ -1,5 +1,6 @@
 {
   "name": "scrappy",
+  "proxy": "https://api.brightdata.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,6 +16,9 @@
     "axios": "^1.7.7",
     "crypto-browserify": "^3.12.0",
     "dotenv": "^16.4.5",
+    "env": "^0.0.2",
+    "express": "^4.21.1",
+    "http-proxy-middleware": "^3.0.3",
     "path-browserify": "^1.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

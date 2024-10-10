@@ -1,44 +1,78 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const MyComponent = () => {
+const ApiDataFetcher = () => {
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [pending, setPending] = useState(false);
+    const apiToken = process.env.BRIGHTKEY || 'b34823d1-ad0f-4b8e-bf65-a85ec974779a';
+
     useEffect(() => {
-        const triggerRequest = async () => {
-            const apiUrl = 'https://api.brightdata.com/datasets/v3/trigger?dataset_id=gd_l7q7dkf244hwjntr0&type=discover_new&discover_by=keyword';
-            const data = [
-                { "keyword": "light bulb" }
-            ];
-            const apiToken = process.env.BRIGHTKEY;
-
+        const fetchData = async () => {
             try {
-                const response = await fetch(apiUrl, {
+                const triggerResponse = await fetch("/api/dca/trigger_immediate?collector=c_m1s0qyib15thpdh5ac", {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${apiToken}`,
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify({"search":"Teclado"})
                 });
 
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud');
+                if (!triggerResponse.ok) {
+                    throw new Error('Error al realizar la primera solicitud');
                 }
 
-                const result = await response.json();
-                console.log(result); // Maneja la respuesta aquí
+                const triggerData = await triggerResponse.json();
+                const responseID = triggerData.response_id;
 
-            } catch (error) {
-                console.error('Error:', error);
+                const fetchResult = async () => {
+                    const resultResponse = await axios.get(`/api/dca/get_result`, {
+                        params: { response_id: responseID },
+                        headers: { Authorization: `Bearer ${apiToken}` }
+                    });
+
+                    const resultData = resultResponse.data;
+
+                    if (resultData.pending) {
+                        setPending(true);
+                        setTimeout(fetchResult, 3000);
+                    } else {
+                        setPending(false);
+                        setData(resultData);
+                    }
+                };
+
+                fetchResult();
+            } catch (err) {
+                setError(err);
+            } finally {
+                setLoading(false);
             }
         };
 
-        triggerRequest();
-    }, []);
+        fetchData();
+    }, [apiToken]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
+    if (pending) {
+        return <div>Processing, please wait...</div>;
+    }
 
     return (
         <div>
-            <h1>Realizando Solicitud...</h1>
+            <h1>API Data</h1>
+            <pre>{JSON.stringify(data, null, 2)}</pre>
         </div>
     );
 };
 
-export default MyComponent;
+export default ApiDataFetcher;
