@@ -1,5 +1,6 @@
+import { create }from 'zustand'
 const useStore = create((set) => ({
-    buscador: ""
+    buscador: "",
     SetBuscador: (value) => set((state) => ({buscador: value}))
 
 }))

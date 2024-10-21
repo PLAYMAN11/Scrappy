@@ -1,30 +1,30 @@
 import './App.css';
-import Request from './BrightData'
-import useStore from './components/useStore'
+import Request from './BrightData';
+import useStore from './components/useStore';
+
 function App() {
 
-  const TextInputComponent = () => {
+    const TextInputComponent = () => {
+        const { inputValue, setInputValue } = useStore();
 
-    const { inputValue, setInputValue } = useStore();
+        const handleChange = (event) => {
+            setInputValue(event.target.value);
+        };
 
-    const handleChange = (event) => {
-      setInputValue(event.target.value);
+        return (
+            <div className="App">
+                    <Request />
+
+            </div>
+        );
     };
-  return (
-    <div className="App">
-      <div>
-        <input
-            type="text"
-            value={inputValue}System.out.println("Hello world!");
-            onChange={handleChange}
-            placeholder="Escribe algo..."
-        />
-        <p>Valor actual: {inputValue}</p>
 
-        <Request/>
-      </div>
-      );
-      }
+    return (
+        <div>
+            <TextInputComponent />
+        </div>
+    );
+}
 
-      export default App;
+export default App;
 
