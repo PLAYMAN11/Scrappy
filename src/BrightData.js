@@ -11,8 +11,11 @@ const API = () => {
 
     const fetchApiData = async () => {
         setLoading(true);
+        setError(null);
+        setData(null);
+
         try {
-            const triggerResponse = await fetch("/api/dca/trigger_immediate?collector=c_m1s0qyib15thpdh5ac", {
+            const triggerResponse = await fetch("/dca/trigger?collector=c_m2wuvdwhspys0dt0l&queue_next=1", {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${apiToken}`,
@@ -26,22 +29,27 @@ const API = () => {
             }
 
             const triggerData = await triggerResponse.json();
-            const responseID = triggerData.response_id;
+            const responseID = triggerData.collection_id;
 
             const fetchResult = async () => {
-                const resultResponse = await axios.get(`/api/dca/get_result`, {
-                    params: { response_id: responseID },
-                    headers: { Authorization: `Bearer ${apiToken}` }
-                });
+                try {
+                    const resultResponse = await axios.get(`/api/dca/dataset`, {
+                        params: { id: responseID },
+                        headers: { Authorization: `Bearer ${apiToken}` }
+                    });
 
-                const resultData = resultResponse.data;
+                    const resultData = resultResponse.data;
 
-                if (resultData.pending) {
-                    setPending(true);
-                    setTimeout(fetchResult, 3000);
-                } else {
+                    if (resultData.status == "collecting" || resultData.status == "building") {
+                        setPending(true);
+                        setTimeout(fetchResult, 3000);
+                    } else {
+                        setPending(false);
+                        setData(resultData);
+                    }
+                } catch (err) {
+                    setError(err);
                     setPending(false);
-                    setData(resultData);
                 }
             };
 
