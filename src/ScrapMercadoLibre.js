@@ -9,14 +9,14 @@ const API = async (inputValue) => {
     let pending = false;
 
     try {
-        // Realizar la primera solicitud POST
-        const triggerResponse = await fetch("/dca/trigger?collector=c_m2wuvdwhspys0dt0l&queue_next=1", {
+
+        const triggerResponse = await fetch("/dca/trigger?collector=c_m337y86o1i8vdpaki3&queue_next=1", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${apiToken}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ search: inputValue })
+            body: JSON.stringify({"search": inputValue})
         });
 
         if (!triggerResponse.ok) {
@@ -28,6 +28,7 @@ const API = async (inputValue) => {
 
         const fetchResult = async () => {
             let resultData = null;
+
         while (true) {
             try {
 
@@ -53,8 +54,8 @@ const API = async (inputValue) => {
     };
 
         await fetchResult();
-    } catch (mainErr) {
-        error = mainErr;
+    } catch (err) {
+        error = err;
     } finally {
         loading = false;
     }
