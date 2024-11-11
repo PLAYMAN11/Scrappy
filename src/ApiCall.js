@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import mercadolibre from './ScrapMercadoLibre';
 import amazon from './BrightData';
+import ProductCard from './components/ProductCard.js'
 
 const APIsCall = () => {
-    const [InputValue, setInputValue] = useState('');
-    const [Loading, setLoading] = useState(false);
-    const [APIsData, setAPIsData] = useState(null);
+    const [inputValue, setInputValue] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [apisData, setAPIsData] = useState(null);
 
-    const handleSearch = async () => {
+    const handleSearch = async (e) => {
+        e.preventDefault();
         setLoading(true);
 
         try {
+            const mercadoResponse = await mercadolibre(inputValue);
+            const amazonResponse = await amazon(inputValue);
 
-            const mercadoResponse = await mercadolibre(InputValue);
-            const amazonResponse = await amazon(InputValue);
-
-            // If the API response structure is not flat, you might need to access specific fields
             const data = {
-                Mercado_Libre: mercadoResponse?.data || mercadoResponse, // Use the correct data structure
-                Amazon: amazonResponse?.data || amazonResponse, // Adjust based on the response structure
+                Mercado_Libre: mercadoResponse?.data || mercadoResponse,
+                Amazon: amazonResponse?.data || amazonResponse,
             };
 
             setAPIsData(data);
@@ -31,18 +31,26 @@ const APIsCall = () => {
 
     return (
         <div>
-            <input
-                type="text"
-                value={InputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-            />
-            <button onClick={handleSearch}>Buscar</button>
+            <form
+                className="flex items-center space-x-2 justify-center rounded-full py-2 px-4 bg-indigo-100 max-w-md mx-auto"
+                onSubmit={handleSearch}
+            >
+                <input
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder="Search..."
+                    className="flex-1 outline-none bg-transparent text-indigo-400 placeholder:text-indigo-300"
+                />
+                <button type="submit">Buscar</button>
+            </form>
 
-            {Loading ? "Cargando..." : null}
+            {loading && <p>Cargando...</p>}
 
-            {APIsData ? <pre>{JSON.stringify(APIsData, null, 2)}</pre> : null}
+            {apisData && <ProductCard productos={apisData} />}
+
         </div>
     );
-}
+};
 
 export default APIsCall;

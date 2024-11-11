@@ -1,30 +1,16 @@
 import React from 'react';
 import './App.css';
-import Request from './ApiCall';
+import Request from './ApiCall.js';
 import useStore from './components/useStore';
 
 function App() {
 
-    const TextInputComponent = () => {
-        const { inputValue, setInputValue } = useStore();
-
-        const handleChange = (event) => {
-            setInputValue(event.target.value);
-        };
-
         return (
             <div className="App">
-                    <Request />
+                <Request />
             </div>
         );
     };
 
-    return (
-        <div>
-            <TextInputComponent />
-        </div>
-    );
-}
-
-export default App;
+    export default App;
 
