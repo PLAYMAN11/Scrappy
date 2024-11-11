@@ -1,8 +1,7 @@
 import React from 'react';
 import './App.css';
-import Request from './BrightData';
+import Request from './ApiCall';
 import useStore from './components/useStore';
-
 
 function App() {
 
@@ -16,7 +15,6 @@ function App() {
         return (
             <div className="App">
                     <Request />
-
             </div>
         );
     };
