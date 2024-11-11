@@ -1,0 +1,33 @@
+.product-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    width: 200px;
+    margin: 8px;
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.product-title {
+    font-size: 1rem;
+    margin: 8px 0;
+}
+
+.product-price {
+    color: #333;
+    font-weight: bold;
+}
+
+.buy-link {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.buy-link:hover {
+    text-decoration: underline;
+}

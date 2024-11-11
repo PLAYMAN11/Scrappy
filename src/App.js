@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import Request from './ApiCall';
 import useStore from './components/useStore';
 
