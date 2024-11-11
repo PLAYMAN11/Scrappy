@@ -47,7 +47,8 @@ const APIsCall = () => {
 
             {loading && <p>Cargando...</p>}
 
-            {apisData && <ProductCard productos={apisData} />}
+
+            {apisData && <ProductCard productos={/*AQUI METER EL JSON RESULTADO DEL METODO DE JESUS*/ } />}
 
         </div>
     );

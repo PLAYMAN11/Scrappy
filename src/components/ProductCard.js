@@ -3,11 +3,10 @@ import React from 'react';
 
 const ProductCard = ({ productos }) => {
 
-   //productos es un objeto json JESUS JUNTA MERCADOLIBRE Y AMAZON Y CCOLOCA LOS RESULTADOS AQUI
 
-    const ProductCard = ({ /*Colocar el nuevo nombre del arreglo aqui */ }) => {
+
+    const ProductCard = ({productos}) => {
         if (!productos || productos.length == 0) return <p>No products found</p>;
-
         return (
             <div className="product-list">
                 {productos.map((product, index) => (
