@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import mercadolibre from './ScrapMercadoLibre';
 import amazon from './BrightData';
 import ProductCard from './components/ProductCard.js';
