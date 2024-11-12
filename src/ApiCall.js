@@ -23,20 +23,14 @@ function sortJSON(data, orden) {
 
 function Combine(JSON1, JSON2){
 
-    let JSON11 = JSON.stringify(JSON1)
 
-    let JSON22 = JSON.stringify(JSON2)
-
-    JSON11 = JSON.parse(JSON11);
-    JSON22 =JSON.parse(JSON22);
-
-     console.log(JSON11);
-    console.log(JSON22);
+     console.log(JSON1);
+    console.log(JSON2);
     let combined = [];
 
     for (let i = 0; i < 11; i++) {
-         combined.push(JSON11.data[i]);  // Añadir de MercadoLibre
-          combined.push(JSON22.data[i]);  // Añadir de Amazon
+         combined.push(JSON1.data[i]);
+          combined.push(JSON2.data[i]);
     }
     console.log(combined)
     combined=sortJSON(combined,'asc')
