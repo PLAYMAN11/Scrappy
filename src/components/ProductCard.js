@@ -3,9 +3,6 @@ import React from 'react';
 
 const ProductCard = ({ productos }) => {
 
-
-
-    const ProductCard = ({productos}) => {
         if (!productos || productos.length == 0) return <p>No products found</p>;
         return (
             <div className="product-list">
@@ -20,5 +17,4 @@ const ProductCard = ({ productos }) => {
             </div>
         );
     };
-};
 export default ProductCard;
