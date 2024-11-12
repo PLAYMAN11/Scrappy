@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import mercadolibre from './ScrapMercadoLibre';
 import amazon from './BrightData';
-import ProductCard from './components/ProductCard.js'
-
+import ProductCard from './components/ProductCard.js';
 
 function sortJSON(data, orden) {
     return data.sort((a, b) => {
-        const x = parseFloat(a.price) ;
-        const y = parseFloat(b.price) ;
-
+        const x = parseFloat(a.price);
+        const y = parseFloat(b.price);
 
         if (orden === 'asc') {
             return x - y; // Orden ascendente
@@ -22,52 +20,43 @@ function sortJSON(data, orden) {
     });
 }
 
-function Combine(JSON1, JSON2){
-
-
-     console.log(JSON1);
+function Combine(JSON1, JSON2) {
+    console.log(JSON1);
     console.log(JSON2);
     let combined = [];
 
     for (let i = 0; i < 11; i++) {
-         combined.push(JSON1.data[i]);
-          combined.push(JSON2.data[i]);
+        combined.push(JSON1.data[i]);
+        combined.push(JSON2.data[i]);
     }
-    console.log(combined)
-    combined=sortJSON(combined,'asc')
+    console.log(combined);
+    combined = sortJSON(combined, 'asc');
     return combined;
 }
 
-
-
-
 const APIsCall = () => {
-    const [InputValue, setInputValue] = useState('');
-    const [Loading, setLoading] = useState(false);
-     const [APIsData, setAPIsData] = useState(null);
-    const handleSearch = async () => {
-            setLoading(true);
-            let mercadoResponse = null;
-            let amazonResponse = null;
+    const [inputValue, setInputValue] = useState(''); // Changed to inputValue
+    const [loading, setLoading] = useState(false);
+    const [apisData, setApisData] = useState(null); // Changed to apisData
+
+    const handleSearch = async (e) => {
+        e.preventDefault(); // Prevent default form submission behavior
+        setLoading(true);
+        let mercadoResponse = null;
+        let amazonResponse = null;
 
         try {
-            const mercadoResponse = await mercadolibre(inputValue);
-            const amazonResponse = await amazon(inputValue);
-
-
-                      mercadoResponse = await mercadolibre(InputValue);
-                     amazonResponse = await amazon(InputValue);
-
-
+            mercadoResponse = await mercadolibre(inputValue);
+            amazonResponse = await amazon(inputValue);
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
-            setAPIsData(Combine(mercadoResponse, amazonResponse));
+            if (mercadoResponse && amazonResponse) {
+                setApisData(Combine(mercadoResponse, amazonResponse));
+            }
             setLoading(false);
         }
     };
-
-
 
     return (
         <div>
@@ -87,9 +76,7 @@ const APIsCall = () => {
 
             {loading && <p>Cargando...</p>}
 
-
-            {apisData && <ProductCard productos={/*AQUI METER EL JSON RESULTADO DEL METODO DE JESUS*/ } />}
-
+            {apisData && <ProductCard productos={apisData} />}
         </div>
     );
 };
