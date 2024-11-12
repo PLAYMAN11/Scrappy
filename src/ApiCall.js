@@ -7,62 +7,62 @@ function sortJSON(data, orden) {
     return data.sort((a, b) => {
         const x = parseFloat(a.price);
         const y = parseFloat(b.price);
-
-        if (orden === 'asc') {
-            return x - y; // Orden ascendente
-        }
-
-        if (orden === 'desc') {
-            return y - x; // Orden descendente
-        }
-
-        return 0;
+        return orden === 'asc' ? x - y : y - x;
     });
 }
 
 function Combine(JSON1, JSON2) {
-    let JSON11 = JSON.stringify(JSON1)
-
-    let JSON22 = JSON.stringify(JSON2)
-
-    JSON11 = JSON.parse(JSON11);
-    JSON22 = JSON.parse(JSON22);
-
-    console.log(JSON11);
-    console.log(JSON22);
+    let JSON11 = JSON.parse(JSON.stringify(JSON1));
+    let JSON22 = JSON.parse(JSON.stringify(JSON2));
     let combined = [];
 
     for (let i = 0; i < 11; i++) {
-        combined.push(JSON11.data[i]);  // Añadir de MercadoLibre
-        combined.push(JSON22.data[i]);  // Añadir de Amazon
+        if (JSON11.data[i]) combined.push(JSON11.data[i]);  // Asegúrate de que el índice existe
+        if (JSON22.data[i]) combined.push(JSON22.data[i]);
     }
-    console.log(combined)
-    combined = sortJSON(combined, 'asc')
+
+    combined = sortJSON(combined, 'asc');
     return combined;
 }
 
 const APIsCall = () => {
-    const [inputValue, setInputValue] = useState(''); // Changed to inputValue
+    const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
-    const [apisData, setApisData] = useState(null); // Changed to apisData
+    const [combine, setCombine] = useState(null);
+    const [apisData, setApisData] = useState(null);
+    const [plat, setPlat] = useState("");
 
     const handleSearch = async (e) => {
-        e.preventDefault(); // Prevent default form submission behavior
+        e.preventDefault();
         setLoading(true);
-        let mercadoResponse = null;
-        let amazonResponse = null;
 
         try {
-            mercadoResponse = await mercadolibre(inputValue);
-            amazonResponse = await amazon(inputValue);
+            const mercadoResponse = await mercadolibre(inputValue);
+            const amazonResponse = await amazon(inputValue);
+
+            const combinedData = Combine(mercadoResponse, amazonResponse);
+            setApisData(combinedData);
+            setCombine(combinedData); // Mostrar datos combinados por defecto
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
-            if (mercadoResponse && amazonResponse) {
-                setApisData(Combine(mercadoResponse, amazonResponse));
-            }
             setLoading(false);
         }
+    };
+
+    const handleSelect = (e) => {
+        const selectedPlatform = typeof e === "string" ? e : e.target.value;
+        setPlat(selectedPlatform);
+
+        if (!apisData) return;
+
+        const filteredData = selectedPlatform === "amazon"
+            ? apisData.filter(item => item.plataforma === 'Amazon')
+            : selectedPlatform === "mercado"
+                ? apisData.filter(item => item.plataforma === 'MercadoLibre')
+                : apisData;
+
+        setCombine(filteredData);
     };
 
     return (
@@ -81,9 +81,14 @@ const APIsCall = () => {
                 <button type="submit">Buscar</button>
             </form>
 
-            {loading && <p>Cargando...</p>}
+            <select id="Presentacion" name="Presentacion" onChange={handleSelect}>
+                <option value="amazon">Amazon</option>
+                <option value="mercado">Mercado Libre</option>
+                <option value="combinado">Combinado</option>
+            </select>
 
-            {apisData && <ProductCard productos={apisData} />}
+            {loading && <p>Cargando...</p>}
+            {combine && <ProductCard productos={combine} />}
         </div>
     );
 };
