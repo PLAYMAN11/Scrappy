@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import mercadolibre from './ScrapMercadoLibre';
 import amazon from './BrightData';
 
+
 function sortJSON(data, orden) {
     return data.sort((a, b) => {
         const x = parseFloat(a.price.replace(/,/g, '')) || 0;
@@ -33,20 +34,20 @@ const APIsCall = () => {
 
     const handleSearch = async () => {
         setLoading(true);
-
+        const mercadoResponse = null;
+        const amazonResponse = null;
         try {
 
-            const mercadoResponse = await mercadolibre(InputValue);
-            console.log(mercadoResponse);
-            mercadoResponse=sortJSON(mercadoResponse,'desc')
 
-            const amazonResponse = await amazon(InputValue);
+             mercadoResponse = await mercadolibre(InputValue);
+             amazonResponse = await amazon(InputValue);
 
 
 
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
+            setAPIsData(Combine(mercadoResponse, amazonResponse));
             setLoading(false);
         }
     };
