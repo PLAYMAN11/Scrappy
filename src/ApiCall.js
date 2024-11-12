@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import mercadolibre from './ScrapMercadoLibre';
 import amazon from './BrightData';
+import ProductCard from './components/ProductCard.js'
 
 
 function sortJSON(data, orden) {
@@ -49,11 +50,15 @@ const APIsCall = () => {
             let mercadoResponse = null;
             let amazonResponse = null;
 
+
         try {
+            const mercadoResponse = await mercadolibre(inputValue);
+            const amazonResponse = await amazon(inputValue);
 
 
                       mercadoResponse = await mercadolibre(InputValue);
                      amazonResponse = await amazon(InputValue);
+
 
 
         } catch (error) {
@@ -68,18 +73,27 @@ const APIsCall = () => {
 
     return (
         <div>
-            <input
-                type="text"
-                value={InputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-            />
-            <button onClick={handleSearch}>Buscar</button>
+            <form
+                className="flex items-center space-x-2 justify-center rounded-full py-2 px-4 bg-indigo-100 max-w-md mx-auto"
+                onSubmit={handleSearch}
+            >
+                <input
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder="Search..."
+                    className="flex-1 outline-none bg-transparent text-indigo-400 placeholder:text-indigo-300"
+                />
+                <button type="submit">Buscar</button>
+            </form>
 
-            {Loading ? "Cargando..." : null}
+            {loading && <p>Cargando...</p>}
 
-            {APIsData ? <pre>{JSON.stringify(APIsData, null, 2)}</pre> : null}
+
+            {apisData && <ProductCard productos={/*AQUI METER EL JSON RESULTADO DEL METODO DE JESUS*/ } />}
+
         </div>
     );
-}
+};
 
 export default APIsCall;
