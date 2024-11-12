@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = async (inputValue) => {
-    const apiToken = "262d7041-5a8a-463a-a7a5-6718b803b3ac";
+    const apiToken = process.env.REACT_APP_BRIGHTKEY;
 
     let data = null;
     let error = null;
