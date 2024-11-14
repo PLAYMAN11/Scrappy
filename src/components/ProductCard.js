@@ -1,5 +1,5 @@
 import React from 'react';
-//import './ProductCard.css';
+import './ProductCard.css';
 
 const ProductCard = ({ productos }) => {
 
@@ -8,8 +8,8 @@ const ProductCard = ({ productos }) => {
             <div className="product-list">
                 {productos.map((product, index) => (
                     <div key={index} className="product-card">
-                        <img src={product.image} alt={product.title} className="product-image" />
                         <h3 className="product-title">{product.title}</h3>
+                        <img src={product.image} alt={product.title} className="product-image" />
                         <p className="product-price">Precio: ${product.price}</p>
                         <a href={product.url} target="_blank" rel="noopener noreferrer" className="buy-link">Comprar</a>
                     </div>
