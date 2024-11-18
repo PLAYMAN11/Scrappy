@@ -16,4 +16,7 @@ code {
     monospace;
 }
 
+.division{
+  display: flex;
+}
 

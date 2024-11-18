@@ -10,6 +10,9 @@ const ProductCard = ({ productos }) => {
                     <div key={index} className="product-card">
                         <h3 className="product-title">{product.title}</h3>
                         <img src={product.image} alt={product.title} className="product-image" />
+                        <div>
+                             <p className="product-plat">{product.plataforma}</p>
+                        </div>
                         <p className="product-price">Precio: ${product.price}</p>
                         <a href={product.url} target="_blank" rel="noopener noreferrer" className="buy-link">Comprar</a>
                     </div>
