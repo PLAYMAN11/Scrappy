@@ -10,11 +10,12 @@
     border-radius: 16px;
     padding: 16px;
     text-align: center;
-    width: 32%;
+    width: 27%;
     display: grid;
     min-height: 7dvh;
     grid-template-rows: auto 1fr auto ;
     margin-top: 20px;
+    margin: 0, 20px, 0, 20px;
 }
 
 .product-image img {
