@@ -6,7 +6,7 @@ module.exports = function(app) {
         createProxyMiddleware({
             target: 'https://api.brightdata.com',
             changeOrigin: true,
-            pathRewrite: { '^/api': '' }, // Ensures '/api' is stripped
+            pathRewrite: { '^/api': '' },
             onProxyReq: (proxyReq, req, res) => {
                 console.log('Proxying request to:', proxyReq.path);
             },

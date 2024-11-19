@@ -19,7 +19,7 @@ const API = async (inputValue) => {
         });
 
         if (!triggerResponse.ok) {
-            console.error('Error response from API:', await triggerResponse.text());  // Log response for debugging
+            console.error('Error response from API:', await triggerResponse.text());
             throw new Error('Error al realizar la primera solicitud');
         }
 
