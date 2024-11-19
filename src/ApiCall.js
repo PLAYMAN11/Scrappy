@@ -17,8 +17,8 @@ function Combine(JSON1, JSON2) {
     let JSON22 = JSON.parse(JSON.stringify(JSON2));
     let combined = [];
 
-    for (let i = 0; i < 11; i++) {
-        if (JSON11.data[i]) combined.push(JSON11.data[i]);  // Asegúrate de que el índice existe
+    for (let i = 0; i < 50; i++) {
+        if (JSON11.data[i]) combined.push(JSON11.data[i]); 
         if (JSON22.data[i]) combined.push(JSON22.data[i]);
     }
 
