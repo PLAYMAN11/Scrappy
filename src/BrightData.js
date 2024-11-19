@@ -10,7 +10,7 @@ const API = async (inputValue) => {
 
     try {
 
-        const triggerResponse = await fetch("/dca/trigger?collector=c_m2wuvdwhspys0dt0l&queue_next=1", {
+        const triggerResponse = await fetch("/api/dca/trigger?collector=c_m2wuvdwhspys0dt0l&queue_next=1", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${apiToken}`,
