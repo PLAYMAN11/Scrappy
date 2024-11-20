@@ -9,21 +9,22 @@ const API = async (inputValue) => {
     let pending = false;
 
     try {
-
         const triggerResponse = await fetch("/api/dca/trigger?collector=c_m337y86o1i8vdpaki3&queue_next=1", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${apiToken}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({"search": inputValue})
+            body: JSON.stringify([{"search": inputValue}])
         });
 
         if (!triggerResponse.ok) {
+            console.error('Error response from API:', await triggerResponse.text());
             throw new Error('Error al realizar la primera solicitud');
         }
 
         const triggerData = await triggerResponse.json();
+
         const responseID = triggerData.collection_id;
 
         const fetchResult = async () => {
