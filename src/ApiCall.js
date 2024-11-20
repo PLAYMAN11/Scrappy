@@ -50,7 +50,6 @@ const APIsCall = () => {
             setLoading(false);
         }
     };
-
     const handleSelect = (e) => {
         const selectedPlatform = typeof e === "string" ? e : e.target.value;
         setPlat(selectedPlatform);
@@ -82,13 +81,14 @@ const APIsCall = () => {
                 <button type="submit">Buscar</button>
             </form>
 
-            <select id="Presentacion" name="Presentacion" onChange={handleSelect}>
+            
+
+            {loading && <p>Cargando...</p>}
+            {combine &&  <select id="Presentacion" name="Presentacion" onChange={handleSelect}>
                 <option value="amazon">Amazon</option>
                 <option value="mercado">Mercado Libre</option>
                 <option value="combinado">Combinado</option>
-            </select>
-
-            {loading && <p>Cargando...</p>}
+            </select>}
             {combine && <ProductCard productos={combine} />}
         </div>
     );
