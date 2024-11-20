@@ -43,7 +43,7 @@ const APIsCall = () => {
 
             const combinedData = Combine(mercadoResponse, amazonResponse);
             setApisData(combinedData);
-            setCombine(combinedData); // Mostrar datos combinados por defecto
+            setCombine(combinedData);
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
@@ -69,8 +69,7 @@ const APIsCall = () => {
     return (
         <div>
             <form
-                //className="flex items-center space-x-2 justify-center rounded-full py-2 px-4 bg-indigo-100 max-w-md mx-auto"
-                className='w-11/12 h-auto md:w-8/12 xl:w-1/2 bg-whitw p-5 rounded-3xl'
+                className="flex items-center space-x-2 justify-center rounded-full py-2 px-4 bg-indigo-100 max-w-md mx-auto"
                 onSubmit={handleSearch}
             >
                 <input
