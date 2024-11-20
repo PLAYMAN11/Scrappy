@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import mercadolibre from './ScrapMercadoLibre';
 import amazon from './BrightData';
 import ProductCard from './components/ProductCard.js';
+
 
 function sortJSON(data, orden) {
     return data.sort((a, b) => {
         const x = parseFloat(a.price);
         const y = parseFloat(b.price);
-        return orden === 'asc' ? x - y : y - x;
+        console.log(orden)
+        return orden == 'asc' ? x - y : y - x;
     });
 }
 
 function Combine(JSON1, JSON2) {
+
+
     let JSON11 = JSON.parse(JSON.stringify(JSON1));
     let JSON22 = JSON.parse(JSON.stringify(JSON2));
     let combined = [];
 
     for (let i = 0; i < 50; i++) {
-        if (JSON11.data[i]) combined.push(JSON11.data[i]); 
+        if (JSON11.data[i]) combined.push(JSON11.data[i]);  // Asegúrate de que el índice existe
         if (JSON22.data[i]) combined.push(JSON22.data[i]);
     }
-
-    combined = sortJSON(combined, 'asc');
     return combined;
 }
 
@@ -32,6 +33,7 @@ const APIsCall = () => {
     const [combine, setCombine] = useState(null);
     const [apisData, setApisData] = useState(null);
     const [plat, setPlat] = useState("");
+    const [orden, setorden]=useState('asc');
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -41,15 +43,17 @@ const APIsCall = () => {
             const mercadoResponse = await mercadolibre(inputValue);
             const amazonResponse = await amazon(inputValue);
 
-            const combinedData = Combine(mercadoResponse, amazonResponse);
+
+            const combinedData = sortJSON(Combine(mercadoResponse, amazonResponse),orden);
             setApisData(combinedData);
-            setCombine(combinedData);
+            setCombine(combinedData); // Mostrar datos combinados por defecto
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
             setLoading(false);
         }
     };
+
     const handleSelect = (e) => {
         const selectedPlatform = typeof e === "string" ? e : e.target.value;
         setPlat(selectedPlatform);
@@ -62,8 +66,18 @@ const APIsCall = () => {
                 ? apisData.filter(item => item.plataforma === 'MercadoLibre')
                 : apisData;
 
-        setCombine(filteredData);
+        setCombine(sortJSON(filteredData, orden));
     };
+    const handleOrderChange = (e) => {
+        const selectedOrder = e.target.value;
+        setorden(selectedOrder);
+
+        if (!combine) return;
+
+        const sortedData = sortJSON(combine, selectedOrder);
+        setCombine(sortedData);
+    };
+
 
     return (
         <div>
@@ -79,14 +93,23 @@ const APIsCall = () => {
                     className="flex-1 outline-none bg-transparent text-indigo-400 placeholder:text-indigo-300"
                 />
                 <button type="submit">Buscar</button>
-                {combine &&  <select id="Presentacion" name="Presentacion" onChange={handleSelect}>
+            </form>
+
+
+            {loading && <p>Cargando...</p>}
+
+            <select id="Presentacion" name="Presentacion" onChange={handleSelect}>
+                <option value="combinado">Combinado</option>
                 <option value="amazon">Amazon</option>
                 <option value="mercado">Mercado Libre</option>
-                <option value="combinado">Combinado</option>
-            </select>}
-            </form>
-            {loading && <p>Cargando...</p>}
-            {combine && <ProductCard productos={combine} />}
+            </select>
+            <select id="Orden" name="Orden" onChange={handleOrderChange}>
+                <option value='asc'>Menor a mayor</option>
+                <option value='des'>Mayor a menor</option>
+            </select>
+            {combine && <ProductCard productos={combine}/>}
+
+
         </div>
     );
 };
