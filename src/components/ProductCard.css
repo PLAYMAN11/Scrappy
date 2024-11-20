@@ -1,7 +1,8 @@
 .product-list{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
+    padding: 10px;
 }
 
 .product-card {
@@ -10,12 +11,14 @@
     border-radius: 16px;
     padding: 16px;
     text-align: center;
-    width: 27%;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
     display: grid;
     min-height: 7dvh;
     grid-template-rows: auto 1fr auto ;
     margin-top: 20px;
-    margin: 0, 20px, 0, 20px;
+    margin-left: 10px;
 }
 
 .product-image img {

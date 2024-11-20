@@ -79,16 +79,13 @@ const APIsCall = () => {
                     className="flex-1 outline-none bg-transparent text-indigo-400 placeholder:text-indigo-300"
                 />
                 <button type="submit">Buscar</button>
-            </form>
-
-            
-
-            {loading && <p>Cargando...</p>}
-            {combine &&  <select id="Presentacion" name="Presentacion" onChange={handleSelect}>
+                {combine &&  <select id="Presentacion" name="Presentacion" onChange={handleSelect}>
                 <option value="amazon">Amazon</option>
                 <option value="mercado">Mercado Libre</option>
                 <option value="combinado">Combinado</option>
             </select>}
+            </form>
+            {loading && <p>Cargando...</p>}
             {combine && <ProductCard productos={combine} />}
         </div>
     );
