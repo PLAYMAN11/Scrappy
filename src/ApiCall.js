@@ -43,7 +43,7 @@ const APIsCall = () => {
 
             const combinedData = Combine(mercadoResponse, amazonResponse);
             setApisData(combinedData);
-            setCombine(combinedData); // Mostrar datos combinados por defecto
+            setCombine(combinedData);
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
