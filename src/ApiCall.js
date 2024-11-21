@@ -118,9 +118,15 @@ const APIsCall = () => {
                 </select>
             </div>
             {combine && <ProductCard productos={combine}/>}
-            {loading && <p>Cargando...</p>}
-        </div>
-    );
-};
+            {loading && (
+                <video autoPlay loop muted style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', objectFit: 'cover'}}>
+                    <source src="/Animation%20-%201732217162462.webm" type="video/webm"/>
+                    Tu navegador no soporta este formato de video.
+                </video>
+
+            )}
+        </div>)
+}
+
 
 export default APIsCall;
