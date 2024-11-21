@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
 import mercadolibre from './ScrapMercadoLibre';
 import amazon from './BrightData';
 import ProductCard from './components/ProductCard.js';
+import React, { useState, useEffect, useRef } from 'react';
 
 
 function sortJSON(data, orden) {
@@ -28,12 +28,20 @@ function Combine(JSON1, JSON2) {
 }
 
 const APIsCall = () => {
+    const videoRef = useRef(null);
+    const [videoRate, setvideoRate] = useState(null)
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
     const [combine, setCombine] = useState(null);
     const [apisData, setApisData] = useState(null);
     const [plat, setPlat] = useState("");
     const [orden, setorden]=useState('asc');
+
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = 0.75;
+        }
+    }, [loading]);
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -119,12 +127,10 @@ const APIsCall = () => {
             </div>
             {combine && <ProductCard productos={combine}/>}
             {loading && (
-                <video autoPlay loop muted style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', objectFit: 'cover'}}>
+                <video ref={videoRef} autoPlay loop muted style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', objectFit: 'cover'}}>
                     <source src="/Animation%20-%201732217162462.webm" type="video/webm"/>
                     Tu navegador no soporta este formato de video.
-                </video>
-
-            )}
+                </video>)}
         </div>)
 }
 
