@@ -20,3 +20,12 @@ code {
   display: flex;
 }
 
+html{
+  background-color: #c7c3e4;
+  background-image: url(../public/buscar.png);
+  background-repeat: no-repeat;
+  background-position: 50% -125%;
+  height:20% ;
+  height: 40%;
+}
+

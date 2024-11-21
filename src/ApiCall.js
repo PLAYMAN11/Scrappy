@@ -80,9 +80,17 @@ const APIsCall = () => {
 
 
     return (
-        <div>
+        <div className='bg-[#c7c3e4]'>
+            <div className="flex items-center justify-between bg-[#c7c3e4] p-4 h-20">
+            <a
+                    href="#"
+                    target="_self"
+                    rel="noopener noreferrer"
+                    title="Home"
+                ><img src="../public/buscar.png"></img></a>
             <form
-                className="flex items-center space-x-2 justify-center rounded-full py-2 px-4 bg-indigo-100 max-w-md mx-auto"
+                className="flex items-center space-x-2 justify-center rounded-full py-2 px-4 bg-[#9297cd] w-[40%]"
+                style={{position: 'absolute', left: '30%'}}
                 onSubmit={handleSearch}
             >
                 <input
@@ -90,26 +98,27 @@ const APIsCall = () => {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Search..."
-                    className="flex-1 outline-none bg-transparent text-indigo-400 placeholder:text-indigo-300"
+                    className="flex-1 outline-none bg-transparent text-[#ffffff] placeholder:text-[#ffffff] font-bold mr-16"
                 />
                 <button type="submit">Buscar</button>
             </form>
+            
+            </div>
 
-
-            {loading && <p>Cargando...</p>}
-
-            <select id="Presentacion" name="Presentacion" onChange={handleSelect}>
-                <option value="combinado">Combinado</option>
-                <option value="amazon">Amazon</option>
-                <option value="mercado">Mercado Libre</option>
-            </select>
-            <select id="Orden" name="Orden" onChange={handleOrderChange}>
-                <option value='asc'>Menor a mayor</option>
-                <option value='des'>Mayor a menor</option>
-            </select>
+            <div className="flex space-x-4 items-center justify-center mt-4">
+                <select className= " px-5 py-2 rounded-full cursor-pointer flex items-center space-x-2 justify-center rounded-full py-2 px-4 bg-[#9297cd] text-[#ffffff] max-w-md font-bold"id="Presentacion" name="Presentacion" onChange={handleSelect}>
+                    <img width= "10"src="/src/icon.svg"/>
+                    <option value="combinado">Combinado</option>
+                    <option value="amazon">Amazon</option>
+                    <option value="mercado">Mercado Libre</option>
+                </select>
+                <select className= "px-5 py-2 rounded-full cursor-pointer flex items-center space-x-2 justify-center rounded-full py-2 px-4 bg-[#9297cd] max-w-md mx-auto text-[#ffffff] max-w-md font-bold" id="Orden" name="Orden" onChange={handleOrderChange}>
+                    <option value='asc'>Menor a mayor</option>
+                    <option value='des'>Mayor a menor</option>
+                </select>
+            </div>
             {combine && <ProductCard productos={combine}/>}
-
-
+            {loading && <p>Cargando...</p>}
         </div>
     );
 };
