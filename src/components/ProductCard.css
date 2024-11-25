@@ -1,21 +1,24 @@
 .product-list{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
+    padding: 10px;
 }
 
 .product-card {
     background-color: #fff;
-    border: 3px solid #ddd;
     border-radius: 16px;
     padding: 16px;
     text-align: center;
-    width: 27%;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
     display: grid;
     min-height: 7dvh;
     grid-template-rows: auto 1fr auto ;
-    margin-top: 20px;
-    margin: 0, 20px, 0, 20px;
+    margin-top: 25px;
+    margin-left: 30px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.75);
 }
 
 .product-image img {

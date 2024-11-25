@@ -20,3 +20,10 @@ code {
   display: flex;
 }
 
+html{
+  background-color: #c7c3e4;
+  background-repeat: no-repeat;
+  height:100% ;
+  height: 100%;
+}
+

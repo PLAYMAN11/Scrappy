@@ -1,37 +1,47 @@
-import React, { useState } from 'react';
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import mercadolibre from './ScrapMercadoLibre';
 import amazon from './BrightData';
 import ProductCard from './components/ProductCard.js';
+import React, { useState, useEffect, useRef } from 'react';
+
 
 function sortJSON(data, orden) {
     return data.sort((a, b) => {
         const x = parseFloat(a.price);
         const y = parseFloat(b.price);
-        return orden === 'asc' ? x - y : y - x;
+        console.log(orden)
+        return orden == 'asc' ? x - y : y - x;
     });
 }
 
 function Combine(JSON1, JSON2) {
+
+
     let JSON11 = JSON.parse(JSON.stringify(JSON1));
     let JSON22 = JSON.parse(JSON.stringify(JSON2));
     let combined = [];
 
     for (let i = 0; i < 50; i++) {
-        if (JSON11.data[i]) combined.push(JSON11.data[i]); 
+        if (JSON11.data[i]) combined.push(JSON11.data[i]);  // Asegúrate de que el índice existe
         if (JSON22.data[i]) combined.push(JSON22.data[i]);
     }
-
-    combined = sortJSON(combined, 'asc');
     return combined;
 }
 
 const APIsCall = () => {
+    const videoRef = useRef(null);
+    const [videoRate, setvideoRate] = useState(null)
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
     const [combine, setCombine] = useState(null);
     const [apisData, setApisData] = useState(null);
     const [plat, setPlat] = useState("");
+    const [orden, setorden]=useState('asc');
+
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = 0.75;
+        }
+    }, [loading]);
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -41,9 +51,10 @@ const APIsCall = () => {
             const mercadoResponse = await mercadolibre(inputValue);
             const amazonResponse = await amazon(inputValue);
 
-            const combinedData = Combine(mercadoResponse, amazonResponse);
+
+            const combinedData = sortJSON(Combine(mercadoResponse, amazonResponse),orden);
             setApisData(combinedData);
-            setCombine(combinedData);
+            setCombine(combinedData); // Mostrar datos combinados por defecto
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
@@ -63,13 +74,31 @@ const APIsCall = () => {
                 ? apisData.filter(item => item.plataforma === 'MercadoLibre')
                 : apisData;
 
-        setCombine(filteredData);
+        setCombine(sortJSON(filteredData, orden));
+    };
+    const handleOrderChange = (e) => {
+        const selectedOrder = e.target.value;
+        setorden(selectedOrder);
+
+        if (!combine) return;
+
+        const sortedData = sortJSON(combine, selectedOrder);
+        setCombine(sortedData);
     };
 
+
     return (
-        <div>
+        <div className='bg-[#c7c3e4]'>
+            <div className="flex items-center justify-between bg-[#c7c3e4] p-4 h-20">
+            <a
+                    href="#"
+                    target="_self"
+                    rel="noopener noreferrer"
+                    title="Home"
+                ><img src="../public/buscar.png"></img></a>
             <form
-                className="flex items-center space-x-2 justify-center rounded-full py-2 px-4 bg-indigo-100 max-w-md mx-auto"
+                className="flex items-center space-x-2 justify-center rounded-full py-2 px-4 bg-[#9297cd] w-[40%]"
+                style={{position: 'absolute', left: '30%'}}
                 onSubmit={handleSearch}
             >
                 <input
@@ -77,21 +106,33 @@ const APIsCall = () => {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Search..."
-                    className="flex-1 outline-none bg-transparent text-indigo-400 placeholder:text-indigo-300"
+                    className="flex-1 outline-none bg-transparent text-[#ffffff] placeholder:text-[#ffffff] font-bold mr-16"
                 />
                 <button type="submit">Buscar</button>
             </form>
+            
+            </div>
 
-            <select id="Presentacion" name="Presentacion" onChange={handleSelect}>
-                <option value="amazon">Amazon</option>
-                <option value="mercado">Mercado Libre</option>
-                <option value="combinado">Combinado</option>
-            </select>
+            <div className="flex space-x-4 items-center justify-center mt-4">
+                <select className= " px-5 py-2 rounded-full cursor-pointer flex items-center space-x-2 justify-center rounded-full py-2 px-4 bg-[#9297cd] text-[#ffffff] max-w-md font-bold"id="Presentacion" name="Presentacion" onChange={handleSelect}>
+                    <img width= "10"src="/src/icon.svg"/>
+                    <option value="combinado">Combinado</option>
+                    <option value="amazon">Amazon</option>
+                    <option value="mercado">Mercado Libre</option>
+                </select>
+                <select className= "px-5 py-2 rounded-full cursor-pointer flex items-center space-x-2 justify-center rounded-full py-2 px-4 bg-[#9297cd] max-w-md mx-auto text-[#ffffff] max-w-md font-bold" id="Orden" name="Orden" onChange={handleOrderChange}>
+                    <option value='asc'>Menor a mayor</option>
+                    <option value='des'>Mayor a menor</option>
+                </select>
+            </div>
+            {combine && <ProductCard productos={combine}/>}
+            {loading && (
+                <video ref={videoRef} autoPlay loop muted style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', objectFit: 'cover'}}>
+                    <source src="/Animation%20-%201732217162462.webm" type="video/webm"/>
+                    Tu navegador no soporta este formato de video.
+                </video>)}
+        </div>)
+}
 
-            {loading && <p>Cargando...</p>}
-            {combine && <ProductCard productos={combine} />}
-        </div>
-    );
-};
 
 export default APIsCall;
