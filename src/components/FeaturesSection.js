@@ -19,13 +19,13 @@ const FeaturesSection = () => (
         {
           title: "Búsqueda combinada",
           description:
-            "Ve una lista combinada de productos ordenados por precio para tomar decisiones rápidas. Usualmente un mismo producto tiene un precio diferente dependiendo de la plataforma en donde es ofertado, con esta función puedes comprobar rápidamente esta diferencia.",
+            "Ve una lista combinada de productos para tomar decisiones rápidas. Usualmente un mismo producto tiene un precio diferente dependiendo de la plataforma en donde es ofertado, con esta función puedes comprobar rápidamente esta diferencia.",
           icon: "/combine.png",
         },
         {
           title: "Ordenamiento por precio",
           description:
-            "Ve una lista combinada de productos ordenados por precio para tomar decisiones rápidas. Usualmente un mismo producto tiene un precio diferente dependiendo de la plataforma en donde es ofertado, con esta función puedes comprobar rápidamente esta diferencia.",
+            "La lista de productos puede ser ordenada ascendentemente o descendentemente. Quizá te interese ver desde el principio qué productos tienen precios mayores por lo que se permite cambiar el orden por defecto, esto es, de menor a mayor precio.",
           icon: "/sort.png",
         },
       ].map((feature, index) => (
